@@ -49,7 +49,7 @@ app.all('/api', async (req, res) => {
       });
     }
 
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbx0f2_50e-1ubYhQMzsu94rgH4ZQYE4DfG9q7YFXXkQI4zYMJAMeE1_7v68lGyf7rLixQ/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxz_4VZYvgGah0PMBujbQOM4_stbIi7sGNY0r1U8jBntwCatCBlW0nWH9SvOv_yi6DC7Q/exec';
     const url = `${scriptUrl}?sheet=${sheetNameMap[sheetName]}`;
 
     console.log('Forwarding to:', url);
