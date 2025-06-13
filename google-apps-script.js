@@ -67,10 +67,11 @@ const SHEETS = {
     let result;
     // Convert to proper case (first letter uppercase, rest lowercase)
     const properCaseSheetName = sheetName.charAt(0).toUpperCase() + sheetName.slice(1).toLowerCase();
-    if (!SHEETS[Object.keys(SHEETS).find(key => SHEETS[key] === properCaseSheetName)]) {
+    const sheetKey = Object.keys(SHEETS).find(key => SHEETS[key] === properCaseSheetName);
+    if (!sheetKey) {
       result = { error: "Invalid sheet name. Use: Patients, Equipment, or DutyChart" };
     } else {
-      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(properCaseSheetName);
+      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS[sheetKey]);
       if (!sheet) {
         result = { error: "Sheet not found" };
       } else {
@@ -92,31 +93,36 @@ const SHEETS = {
   function doPost(e) {
     const sheetName = (e && e.parameter && e.parameter.sheet) ? e.parameter.sheet : null;
     let result;
-    // Convert to proper case (first letter uppercase, rest lowercase)
-    const properCaseSheetName = sheetName.charAt(0).toUpperCase() + sheetName.slice(1).toLowerCase();
-    if (!sheetName || !SHEETS[Object.keys(SHEETS).find(key => SHEETS[key] === properCaseSheetName)]) {
-      result = { error: "Invalid sheet name. Use: Patients, Equipment, or DutyChart" };
+    if (!sheetName) {
+      result = { error: "Sheet name is required" };
     } else {
-      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(properCaseSheetName);
-      if (!sheet) {
-        result = { error: "Sheet not found" };
+      // Convert to proper case (first letter uppercase, rest lowercase)
+      const properCaseSheetName = sheetName.charAt(0).toUpperCase() + sheetName.slice(1).toLowerCase();
+      const sheetKey = Object.keys(SHEETS).find(key => SHEETS[key] === properCaseSheetName);
+      if (!sheetKey) {
+        result = { error: "Invalid sheet name. Use: Patients, Equipment, or DutyChart" };
       } else {
-        try {
-          const data = JSON.parse(e.postData.contents);
-          const headers = HEADERS[SHEETS[properCaseSheetName]];
-          data.Timestamp = new Date().toISOString();
-          const row = headers.map(header => data[header] || '');
-          sheet.appendRow(row);
-          result = {
-            success: true,
-            message: "Data saved successfully",
-            savedData: data
-          };
-        } catch (error) {
-          result = {
-            error: "Error processing data: " + error.toString(),
-            details: error.stack
-          };
+        const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS[sheetKey]);
+        if (!sheet) {
+          result = { error: "Sheet not found" };
+        } else {
+          try {
+            const data = JSON.parse(e.postData.contents);
+            const headers = HEADERS[SHEETS[sheetKey]];
+            data.Timestamp = new Date().toISOString();
+            const row = headers.map(header => data[header] || '');
+            sheet.appendRow(row);
+            result = {
+              success: true,
+              message: "Data saved successfully",
+              savedData: data
+            };
+          } catch (error) {
+            result = {
+              error: "Error processing data: " + error.toString(),
+              details: error.stack
+            };
+          }
         }
       }
     }
