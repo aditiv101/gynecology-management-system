@@ -12,11 +12,19 @@ services:
         value: production
 
   # React App
-  - type: static
+  - type: web
     name: gynacology-app
-    env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./build
+    env: node
+    buildCommand: |
+      npm install
+      npm run build
+    startCommand: |
+      npm install -g serve
+      serve -s build -l $PORT
+    plan: free
+    healthCheckPath: /
     envVars:
       - key: REACT_APP_API_URL
         value: https://gynacology-proxy.onrender.com/api
+      - key: PORT
+        value: 3000
