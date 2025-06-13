@@ -1,0 +1,182 @@
+.patient-form-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.form-header h5 {
+  color: #1976d2;
+  font-weight: 600;
+  font-size: 1.75rem;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.section-title {
+  color: #424242;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+.form-field .MuiTextField-root {
+  background: #ffffff;
+}
+
+.form-field .MuiOutlinedInput-root {
+  transition: all 0.2s ease;
+}
+
+.form-field .MuiOutlinedInput-root:hover {
+  background: #f5f5f5;
+}
+
+.form-field .MuiOutlinedInput-root.Mui-focused {
+  background: #ffffff;
+}
+
+.form-field .MuiInputLabel-root {
+  font-weight: 500;
+}
+
+.form-field .MuiFormHelperText-root {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.required-field .MuiInputLabel-root::after {
+  content: " *";
+  color: #d32f2f;
+}
+
+.date-fields-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.date-field {
+  flex: 1;
+  min-width: 250px;
+}
+
+.submit-button-container {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e0e0e0;
+}
+
+.submit-button {
+  padding: 0.75rem 2rem !important;
+  font-size: 1.1rem !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.submit-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.2);
+}
+
+.error-snackbar {
+  background-color: #d32f2f !important;
+}
+
+.success-snackbar {
+  background-color: #2e7d32 !important;
+}
+
+.info-snackbar {
+  background-color: #1976d2 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .patient-form-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+
+  .date-fields-container {
+    flex-direction: column;
+  }
+
+  .date-field {
+    min-width: 100%;
+  }
+}
+
+/* Animation for form sections */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-section {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Tooltip styles */
+.custom-tooltip {
+  font-size: 0.875rem !important;
+  padding: 0.5rem 0.75rem !important;
+  background-color: rgba(97, 97, 97, 0.9) !important;
+}
+
+/* Field focus styles */
+.form-field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-width: 2px;
+}
+
+/* Error state styles */
+.form-field .MuiOutlinedInput-root.Mui-error {
+  background-color: #fff5f5;
+}
+
+.form-field .MuiOutlinedInput-root.Mui-error:hover {
+  background-color: #ffe8e8;
+}
+
+/* Success state styles */
+.form-field .MuiOutlinedInput-root.Mui-focused:not(.Mui-error) {
+  background-color: #f5f9ff;
+}
+
+/* Loading state styles */
+.form-field .MuiOutlinedInput-root.Mui-disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+} 
