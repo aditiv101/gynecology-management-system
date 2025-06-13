@@ -30,23 +30,36 @@ app.use((req, res, next) => {
   next();
 });
 
-// Direct proxy to Google Apps Script
-app.post('/api', async (req, res) => {
+// Direct proxy to Google Apps Script for both GET and POST
+app.all('/api', async (req, res) => {
   try {
-    console.log('Received POST request:', req.body);
-    console.log('Sheet:', req.query.sheet);
+    const sheetName = req.query.sheet?.toLowerCase();
+    console.log('Received request:', req.method, 'Sheet:', sheetName);
+
+    // Map sheet names to their correct case
+    const sheetNameMap = {
+      'patients': 'Patients',
+      'equipment': 'Equipment',
+      'dutychart': 'DutyChart'
+    };
+
+    if (!sheetName || !sheetNameMap[sheetName]) {
+      return res.status(400).json({ 
+        error: "Invalid sheet name. Use: patients, equipment, or dutychart" 
+      });
+    }
 
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbx0f2_50e-1ubYhQMzsu94rgH4ZQYE4DfG9q7YFXXkQI4zYMJAMeE1_7v68lGyf7rLixQ/exec';
-    const url = `${scriptUrl}?sheet=${req.query.sheet}`;
+    const url = `${scriptUrl}?sheet=${sheetNameMap[sheetName]}`;
 
     console.log('Forwarding to:', url);
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: req.method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(req.body)
+      body: req.method === 'POST' ? JSON.stringify(req.body) : undefined
     });
 
     console.log('Response status:', response.status);
@@ -55,7 +68,7 @@ app.post('/api', async (req, res) => {
 
     res.json(data);
   } catch (error) {
-    console.error('Error in POST handler:', error);
+    console.error('Error in request handler:', error);
     res.status(500).json({ 
       error: 'Proxy error', 
       details: error.message,
@@ -63,21 +76,6 @@ app.post('/api', async (req, res) => {
     });
   }
 });
-
-// GET requests still use proxy middleware
-app.use('/api', createProxyMiddleware({
-  target: 'https://script.google.com',
-  changeOrigin: true,
-  secure: false,
-  pathRewrite: {
-    '^/api': '/macros/s/AKfycbx0f2_50e-1ubYhQMzsu94rgH4ZQYE4DfG9q7YFXXkQI4zYMJAMeE1_7v68lGyf7rLixQ/exec'
-  },
-  onProxyRes: (proxyRes, req, res) => {
-    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    proxyRes.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
-    proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type';
-  }
-}));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

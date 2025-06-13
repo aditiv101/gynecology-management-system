@@ -43,7 +43,7 @@ function DutyChart() {
 
   const fetchDutyChart = async () => {
     try {
-      const response = await fetch(`${getApiUrl()}?sheet=DutyChart`);
+      const response = await fetch(`${getApiUrl()}?sheet=dutychart`);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || `Server responded with ${response.status}`);
@@ -90,7 +90,7 @@ function DutyChart() {
 
       console.log('Submitting data:', formData);
       
-      const response = await fetch(`${getApiUrl()}?sheet=DutyChart`, {
+      const response = await fetch(`${getApiUrl()}?sheet=dutychart`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
