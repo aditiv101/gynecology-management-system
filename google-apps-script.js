@@ -65,10 +65,12 @@ const SHEETS = {
   function doGet(e) {
     const sheetName = (e && e.parameter && e.parameter.sheet) ? e.parameter.sheet : 'Patients';
     let result;
-    if (!SHEETS[sheetName.toUpperCase()]) {
+    // Convert to proper case (first letter uppercase, rest lowercase)
+    const properCaseSheetName = sheetName.charAt(0).toUpperCase() + sheetName.slice(1).toLowerCase();
+    if (!SHEETS[Object.keys(SHEETS).find(key => SHEETS[key] === properCaseSheetName)]) {
       result = { error: "Invalid sheet name. Use: Patients, Equipment, or DutyChart" };
     } else {
-      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS[sheetName.toUpperCase()]);
+      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(properCaseSheetName);
       if (!sheet) {
         result = { error: "Sheet not found" };
       } else {
@@ -90,16 +92,18 @@ const SHEETS = {
   function doPost(e) {
     const sheetName = (e && e.parameter && e.parameter.sheet) ? e.parameter.sheet : null;
     let result;
-    if (!sheetName || !SHEETS[sheetName.toUpperCase()]) {
-      result = { error: "Invalid sheet name. Use: patients, equipment, or dutychart" };
+    // Convert to proper case (first letter uppercase, rest lowercase)
+    const properCaseSheetName = sheetName.charAt(0).toUpperCase() + sheetName.slice(1).toLowerCase();
+    if (!sheetName || !SHEETS[Object.keys(SHEETS).find(key => SHEETS[key] === properCaseSheetName)]) {
+      result = { error: "Invalid sheet name. Use: Patients, Equipment, or DutyChart" };
     } else {
-      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS[sheetName.toUpperCase()]);
+      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(properCaseSheetName);
       if (!sheet) {
         result = { error: "Sheet not found" };
       } else {
         try {
           const data = JSON.parse(e.postData.contents);
-          const headers = HEADERS[SHEETS[sheetName.toUpperCase()]];
+          const headers = HEADERS[SHEETS[properCaseSheetName]];
           data.Timestamp = new Date().toISOString();
           const row = headers.map(header => data[header] || '');
           sheet.appendRow(row);

@@ -38,14 +38,14 @@ app.all('/api', async (req, res) => {
 
     // Map sheet names to their correct case
     const sheetNameMap = {
-      'patients': 'PATIENTS',
-      'equipment': 'EQUIPMENT',
-      'dutychart': 'DUTY_CHART'
+      'patients': 'Patients',
+      'equipment': 'Equipment',
+      'dutychart': 'DutyChart'
     };
 
     if (!sheetName || !sheetNameMap[sheetName]) {
       return res.status(400).json({ 
-        error: "Invalid sheet name. Use: patients, equipment, or dutychart" 
+        error: "Invalid sheet name. Use: Patients, Equipment, or DutyChart" 
       });
     }
 
