@@ -38,9 +38,9 @@ app.all('/api', async (req, res) => {
 
     // Map sheet names to their correct case
     const sheetNameMap = {
-      'patients': 'Patients',
-      'equipment': 'Equipment',
-      'dutychart': 'DutyChart'
+      'patients': 'PATIENTS',
+      'equipment': 'EQUIPMENT',
+      'dutychart': 'DUTY_CHART'
     };
 
     if (!sheetName || !sheetNameMap[sheetName]) {
