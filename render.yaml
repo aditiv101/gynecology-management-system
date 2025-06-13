@@ -1,0 +1,22 @@
+services:
+  # Proxy Server
+  - type: web
+    name: gynacology-proxy
+    env: node
+    buildCommand: npm install
+    startCommand: node proxy-server.js
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+  # React App
+  - type: static
+    name: gynacology-app
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://gynacology-proxy.onrender.com/api
