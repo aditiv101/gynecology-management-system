@@ -63,7 +63,7 @@ function Reports() {
       const [patientsResponse, equipmentResponse, dutyChartResponse] = await Promise.all([
         fetch(`${getApiUrl()}?sheet=patients`),
         fetch(`${getApiUrl()}?sheet=equipment`),
-        fetch(`${getApiUrl()}?sheet=dutychart`),
+        fetch(`${getApiUrl()}?sheet=DutyChart`),
       ]);
 
       // Check for errors in responses
