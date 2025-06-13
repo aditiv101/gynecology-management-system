@@ -5,12 +5,16 @@ const fetch = require('node-fetch');
 
 const app = express();
 
-// Enable CORS for all routes
+// Enable CORS for all routes with specific origin
 app.use(cors({
-  origin: '*',
+  origin: ['https://gynacology-app.onrender.com', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type'],
+  credentials: true
 }));
+
+// Add OPTIONS handler for preflight requests
+app.options('*', cors());
 
 // Parse JSON bodies
 app.use(express.json());
